@@ -1,0 +1,56 @@
+#
+# calendar : Monthly Calendar
+#
+# ひと月カレンダー
+# 入力された年と月から、ひと月分のカレンダーを表示します。
+#
+# 例.
+# yyyymm = 200508
+#
+#      2005年 8月
+# 日 月 火 水 木 金 土
+#     1  2  3  4  5  6
+#  7  8  9 10 11 12 13
+# 14 15 16 17 18 19 20
+# 21 22 23 24 25 26 27
+# 28 29 30 31
+#ok.
+#
+# §コマンドラインからも次のように入力できます。
+#  echo 200601 | cb calendar.txt
+#
+######################################################################
+
+# 入力
+	input "yyyymm = ";yyyymm
+	month = yyyymm mod 100
+	year = (yyyymm - month )/100
+	if month < 1 or 12 < month then print "入力値から月が読み取れませんでした。": end
+
+# 月の日数を求める
+	days = 31
+	if month = 4 or month = 6 or month = 9 or month = 11 then days = 30
+	if month = 2 then days = 28 + ((year mod 4 = 0) and (year mod 100 <> 0) or (year mod 400 = 0))
+
+# zellerの公式より、その月の初日が何曜日かを求める。
+	zyear = year
+	zmonth = month
+	if zmonth = 1 or zmonth = 2 then zyear = zyear - 1: zmonth = zmonth+12
+	week = zyear + int(zyear / 4)  - int(zyear / 100) + int(zyear / 400) 
+	week = week + ((13 * zmonth + 8) - (13 * zmonth + 8) mod 5) / 5  
+	week = (week + 1) mod 7
+
+# 表示
+	print
+	print "      ";year;"年 ";month;"月"
+	print " 日 月 火 水 木 金 土"
+
+	for day = 1-week to days
+		if day < 1 then print "   ";
+		if 1 <= day and day < 10 then print "  ";day;
+		if 10 <= day then print " ";day;
+		if (day + week) mod 7 = 0  then print
+	next day
+
+	print
+	end

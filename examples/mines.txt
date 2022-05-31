@@ -1,0 +1,169 @@
+#
+# mines : minesweep game
+# 
+######################################################################
+
+
+#
+# main
+#
+	input "seed = "; r
+	gosub INIT
+label loop
+	gosub PRINTDATA
+#	print "残り:";71 - opened;"枚  ";
+	print "rest:";71 - opened;" mines, ";
+	input "xy = "; xy
+	y = xy mod 10
+	x = (xy-y) / 10
+	
+	gosub OPEN
+	print
+	if gameover then gosub PRINTDATA: end
+	if opened = 71 then gosub PRINTDATA: end
+	goto loop
+	end
+
+
+#
+# 初期化
+#
+label INIT
+	for x = 1 to 9
+		for y = 1 to 9
+			data(x,y) = 0
+		next y
+	next x
+	opened = 0
+	sp = 0
+	gameover = 0
+
+# 地雷を置く
+	for i=1 to 10
+	label onemore
+		gosub random
+		x = r mod 9 + 1
+		gosub random
+		y = r mod 9 + 1
+		if data(x,y) = 99 then goto onemore
+		data(x,y) = 99
+	next i
+
+	# 周りに地雷が何個あるか？
+	for x = 1 to 9
+		for y = 1 to 9
+			mind = 0
+			for dx = x -1 to x + 1
+				for dy = y -1 to y + 1
+					if data(dx,dy) = 99 then mind = mind + 1
+				next
+			next
+			if data(x,y) < 99 then data(x,y) = mind
+		next y
+	next x
+
+	return
+
+#
+# 表示
+#     0:周りに地雷がなく、開いていない
+#   1-9:周りに地雷があり、開いていない
+#    10:周りに地雷がなく、開いている
+# 11-19:周りに地雷があり、開いている
+#    99:地雷があり、開いていない
+#   199:地雷があり、開いている
+#
+label PRINTDATA
+	print "  1 2 3 4 5 6 7 8 9"
+	for y = 1 to 9
+		print y;
+		for x = 1 to 9
+			isOpen0 = data(x,y) = 10
+			isOpen = 11<=data(x,y) and data(x,y)<=19
+			isOpenMin = data(x,y) = 199
+			isWin = opened = 71 and data(x,y) = 99
+			isBroken = gameover and data(x,y) = 99
+			if isOpen0 then print "  ";
+			if isOpen then gosub PRINTDATASUB
+			if isOpenMin then print " @";
+			if isBroken then print " X";
+			if isWin then print " *";
+			if not (isOpen or isOpenMin or isOpen0 or isWin or isBroken) then print " .";
+		next x
+		print
+	next y
+#	if gameover then print "残念、失敗……"
+	if gameover then print "Too bad. Failed..."
+#	if opened = 71 then print "クリア、おめでとう！"
+	if opened = 71 then print "Completed. congratulation!"
+	return
+
+#
+# 表示用サブルーチン
+#
+label PRINTDATASUB
+	if data(x,y) = 0 then print "  ";
+	if data(x,y) = 11 then print " 1";
+	if data(x,y) = 12 then print " 2";
+	if data(x,y) = 13 then print " 3";
+	if data(x,y) = 14 then print " 4";
+	if data(x,y) = 15 then print " 5";
+	if data(x,y) = 16 then print " 6";
+	if data(x,y) = 17 then print " 7";
+	if data(x,y) = 18 then print " 8";
+	if data(x,y) = 19 then print " 9";
+	return 
+
+#
+# 再帰を使って周りを開く
+#
+label OPEN
+	if data(x,y) = 99 then gameover = 1: data(x,y) = 199:return
+	if data(x,y) > 0 and data(x,y) <= 9 then data(x,y) = data(x,y) + 10: opened = opened + 1: return
+	if data(x,y) >= 10 then return
+	data(x,y) = 10
+	xx = x
+	yy = y
+	opened = opened + 1
+	for x = xx -1 to xx + 1
+		for y = yy -1 to yy + 1
+			xok = 1 <= x and x <= 9
+			yok = 1 <= y and y <= 9
+			isOpen = data(x,y)>=10 and data(x,y)<>99
+			if xok and yok and not isOpen then gosub push:gosub OPEN:gosub pop
+		next
+	next
+	return
+
+#
+# 変数をPUSH
+#
+label push
+	x(sp) = x
+	y(sp) = y
+	xx(sp) = xx
+	yy(sp) = yy
+	sp = sp + 1
+	return
+
+#
+# 変数をPOP
+#
+label pop
+	sp = sp - 1
+	x = x(sp)
+	y = y(sp)
+	xx = xx(sp)
+	yy = yy(sp)
+	return
+	
+
+#
+# r <- 乱数発生
+#
+label random
+	r = r/1103515245
+	r = r*1000000000+12345
+	#print "r = ";r
+	return
+

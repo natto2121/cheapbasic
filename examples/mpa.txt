@@ -1,0 +1,218 @@
+# 
+# multiple-precision arithmetic : calculate exp(1) and Pi.
+#
+######################################################################
+
+	i = 0
+	RADIX = 100000  
+	N = 200         # decimal places = N * log Radix
+	NN = N + 2      
+	u = 0
+	m = 0
+	md = 0
+	t = 0
+
+
+#
+# main
+#
+	gosub Exp
+	gosub Pi
+	end
+
+
+#
+# Pi
+#
+label Pi
+	gosub ResetA
+	gosub ResetT
+	gosub ResetU
+	
+	t(0) = 4 * 4
+	x = 5: m = 0: gosub TdivXtoT
+	gosub AaddTtoA
+	signum = -1
+
+	k = 1
+	m = 0: um = 0: tm = 0
+
+label Pi1
+	x = 25: m = tm: gosub TdivXtoT: tm = m
+	k =  k + 2
+	x = k: m = um: gosub TdivXtoU: um = m
+	if signum = 1 then gosub AaddUtoA
+	if signum = -1 then gosub AsubUtoA
+	m = tm
+	signum = - signum
+	if m < NN then goto Pi1
+
+	gosub ResetT
+	t(0) = 4
+	x = 239: m = 0: gosub TdivXtoT
+	k = 1
+	m = 0: um = 0: tm = 0
+	signum = -1
+
+label Pi2
+	x = k: m = um: gosub TdivXtoU: um = m
+	if signum = 1 then gosub AaddUtoA
+	if signum = -1 then gosub AsubUtoA
+	x = 239 : m = tm: gosub TdivXtoT: tm = m
+	x = 239 : m = tm: gosub TdivXtoT: tm = m
+	k =  k + 2
+	signum = -1 * signum
+	if m < NN then goto Pi2
+
+	print "Pi = ";
+	gosub PrintOut
+	return
+
+
+#
+# Exp(1)
+#
+label Exp
+	gosub resetA
+	gosub resetT
+	a(0) = 2
+	a(1) = 5 * (RADIX / 10)
+	t(1) = 5 * (RADIX / 10)
+	x = 3
+	m = 1
+
+label Exp1
+	gosub TdivXtoT
+	gosub AaddTtoA
+	x = x + 1
+	if m < NN then goto Exp1
+	
+	print "e = ";
+	gosub PrintOut
+	return
+
+#
+# a = a - u
+#
+label AsubUtoA
+	u = 0
+	for i = NN to 0 step -1
+		u = a(i) - u(i) - u
+		if u >= 0 then a(i) = u: u = 0
+		if u < 0 then a(i) = u + RADIX: u = 1
+	next
+	if u < 0 then goto OVERFLOW
+	return
+
+#
+# a = a + t
+#
+label AaddTtoA
+	u = 0
+	for i = NN to 0 step -1
+		u = u + a(i) + t(i)
+		if u > RADIX then a(i) = u mod RADIX: u = 1: next
+		a(i) = u: u = 0
+	next
+	if u > 0 then goto OVERFLOW
+	return
+
+#
+# a = a + u
+#
+label AaddUtoA
+	u = 0
+	for i = NN to 0 step -1
+		u = u + a(i) + u(i)
+		if u > RADIX then a(i) = u mod RADIX: u = 1: next
+		a(i) = u: u = 0
+	next
+	if u > 0 then goto OVERFLOW
+	return
+
+#
+# t = t / x
+#
+label TdivXtoT
+	t = 0
+	md = 0
+	for i = m -1 to NN
+		t = t * RADIX + t(i)
+		md = t mod X
+		t(i) = (t - md )/ x: t = md 
+	next
+	if t(m) = 0 then m = m + 1
+	return
+
+#
+# u = t / x 
+#
+label TdivXtoU
+	t = 0
+	md = 0
+	
+	for i = 0 to m
+		u(i) = 0
+	next
+
+	for i = m -1 to NN
+		t = t * RADIX + t(i)
+		md = t mod x
+		u(i) = (t - md )/ x: t = md 
+	next
+	if u(m) = 0 then m = m + 1
+	return
+
+#
+# OVERFLOW
+#
+label OVERFLOW
+	print "OVERFLOW"
+end
+
+
+#
+# a = 0
+#
+label ResetA
+	for i = 0 to NN
+		a(i) = 0
+	next
+	return
+	
+#
+# t = 0
+#
+label ResetT
+	for i = 0 to NN
+		t(i) = 0
+	next
+	return
+
+#
+# u = 0
+#
+label ResetU
+	for i = 0 to NN
+		u(i) = 0
+	next
+	return
+
+
+#
+# print a
+#
+label PrintOut
+	print "    ";a(0);"."
+	for i = 1 to N
+		j = RADIX / 10
+label PrintOut1
+			if a(i) < j then print "0";
+			j = j / 10
+			if j > 1 then goto PrintOut1
+		print a(i);
+		if i mod 2 = 0 then print " ";
+		if i mod 10 = 0 then print
+	next
+	print
+	return

@@ -1,0 +1,44 @@
+#
+# taylor : Taylor series. calculate exponential and pi.
+# 
+######################################################################
+
+	COUNT = 20
+	gosub EXP
+	gosub PI
+	end
+
+#
+# Machin's formula
+# pi/4 = 4*arctan(1/5) - arctan(1/239)
+#
+label PI
+	p = 0: k = 1: t = 4*4 / 5
+	for k = 1 to COUNT step 2
+		p = p + t / k
+		t = -t / (5 * 5)
+	next k
+
+	t =4/239
+	for k = 1 to COUNT step 2
+		p = p - t / k
+		t =  -t / (239 * 239)
+	next k
+
+	print "pi = ";p
+	return
+
+
+#
+# exp
+#
+label EXP
+	t = 1: p = 1
+	for k = 1 to COUNT
+		t =  t / k
+		p = p + t
+	next k
+
+	print "e = ";p
+	return
+

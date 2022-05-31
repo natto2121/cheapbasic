@@ -1,0 +1,160 @@
+#
+# mandel : print Mandelbrot Set to a PDF file.
+# 
+######################################################################
+
+	WIDTH = 320
+	HEIGHT = 320
+
+	print "%%PDF-1.2"
+	print "1 0 obj"
+	print "<<"
+	print "/Type /Catalog"
+	print "/Pages 3 0 R"
+	print "/PageMode /UseNone"
+	print "/PageLayout /SinglePage"
+	print ">>"
+	print "endobj"
+	print "2 0 obj"
+	print "<<"
+	print "/Subject ()"
+	print "/Title ()"
+	print ">>"
+	print "endobj"
+	print "3 0 obj"
+	print "<<"
+	print "/Type /Pages"
+	print "/Kids [4 0 R ]"
+	print "/Count 1"
+	print ">>"
+	print "endobj"
+	print "4 0 obj"
+	print "<<"
+	print "/Type /Page"
+	print "/Parent 3 0 R"
+	###################################################
+	print "/MediaBox [0 0 ";HEIGHT;" ";WIDTH;" ]"
+	print "/Resources <<"
+	print "/Font <<"
+	print "/F0 6 0 R"
+	print ">>"
+	print "/XObject <<"
+	print "/PDF0 7 0 R"
+	print ">>"
+	print "/ProcSet [/PDF /Text /ImageC ]"
+	print ">>"
+	print "/Contents 5 0 R"
+	print ">>"
+	print "endobj"
+	print "5 0 obj"
+	print "<<"
+	print "/Length 46"
+	print ">>"
+	print "stream"
+	print "/F0 10 Tf"
+	print "q"
+	###################################################
+	print HEIGHT;" 0 0 ";WIDTH;" 0 0 cm"
+	print "/PDF0 Do"
+	print "Q"
+	print "endstream"
+	print "endobj"
+	print "6 0 obj"
+	print "<<"
+	print "/Type /Font"
+	print "/Subtype /Type1"
+	print "/Encoding /WinAnsiEncoding"
+	print "/FirstChar 32"
+	print "/LastChar 255"
+	print "/BaseFont /Helvetica"
+	print "/Name /F0"
+	print ">>"
+	print "endobj"
+	print "7 0 obj"
+	print "<<"
+	###################################################
+	print "/Length "; WIDTH * HEIGHT / 8 * 50 + 1
+	print "/Filter [/ASCIIHexDecode ]"
+	print "/Type /XObject"
+	print "/Subtype /Image"
+	print "/ColorSpace /DeviceRGB"
+	###################################################
+	print "/Width ";HEIGHT
+	###################################################
+	print "/Height ";WIDTH
+	print "/BitsPerComponent 8"
+	print "/Name /PDF0"
+	print ">>"
+	print "stream"
+
+
+	###################################################
+	left = -2
+	right= 0.8
+	h = (right - left)
+
+	px=WIDTH
+	py=HEIGHT
+
+	FOR u= left TO right step (right-left)/px
+		FOR v = -h/2 to h/2 step h/py
+			x = 0
+			y = 0
+			ok = 0
+			FOR n = 1 TO 100
+				x1 = x * x - y * y + u
+				y1 = 2 * x * y + v
+				x = x1
+				y = y1
+				IF x*x+y*y>4 THEN : ok = 1 :data = 255 * n : n = 100 : gosub printFFFFFF
+			NEXT n
+			if not ok then data = 0: gosub printFFFFFF
+		NEXT v
+	NEXT u
+	###################################################
+
+	print ">"
+	print "endstream"
+	print "endobj"
+	print "xref"
+	print "0 8"
+	print "0000000000 65535 f"
+	print "0000000010 00000 n"
+	print "0000000110 00000 n"
+	print "0000000159 00000 n"
+	print "0000000224 00000 n"
+	print "0000000426 00000 n"
+	print "0000000529 00000 n"
+	print "0000000675 00000 n"
+	print "trailer"
+	print "<<"
+	print "/Size 8"
+	print "/Root 1 0 R"
+	print "/Info 2 0 R"
+	print ">>"
+	print "startxref"
+	###################################################
+	print 882 + WIDTH * HEIGHT / 8 * 50
+	print "%%EOF"
+
+	end
+
+#
+# print data sub
+#
+label printFFFFFF
+	printcount = printcount + 1
+	d = data
+	for dk = 1 to 6
+		d = data mod 16
+		data = (data - d)/ 16
+		if 0 <= d and d<=9 then print d;
+		if d = 10 then print "A";
+		if d = 11 then print "B";
+		if d = 12 then print "C";
+		if d = 13 then print "D";
+		if d = 14 then print "E";
+		if d = 15 then print "F";
+	next dk
+	if printcount mod 8 = 0 then print
+	return

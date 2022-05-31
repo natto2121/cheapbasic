@@ -1,0 +1,19 @@
+#
+# mtable : print multiply (9 x 9) table.
+# 
+######################################################################
+
+	MaxX = 9         # 1<=MaxX<=9
+	MaxY = 9         # 1<=MaxY<=9
+
+
+	print "***** multiply table *****"
+	for x = 1 to MaxX
+		for y = 1 to MaxY
+			if x * y < 10 then print " ";
+			print x * y;" ";
+		next y
+		print
+	next x
+
+	end
