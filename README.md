@@ -1,6 +1,6 @@
 # CheapBasic
   
-その昔、8ビットパソコンが出始めた頃、Tiny BASICというBASIC言語のサブセットが盛んに作られた時期があったそうです。コマンドライン処理のわずかな機能しかありませんでしたが、わずか数キロバイトのメモリで高級言語を動かすというのは、大きな挑戦のひとつだったようです。CheapBasicはある意味、その末裔です。CheapBasicのソースはC言語で約650行ほどですが、IF文、GOTO文、PRINT文、INPUT文などの必須機能はもとより、FOR - NEXT、GOSUB - RETURN、実数演算、多次元配列、再帰などの機能もあります。次のサンプルのようなゲームやCGプログラムも作ることが出来ます。プログラム言語の処理を簡単に知りたい、これから作ってみたいかたなどには参考になるかもしれません。Windows(Wsl), MacOS, Linux(Raspberry Pi OSでの確認）などの汎用CUI環境で動作します。興味がありましたらぜひ使ってみてください。
+その昔、8ビットパソコンが出始めた頃、Tiny BASICというBASIC言語のサブセットが盛んに作られた時期があったそうです。コマンドライン処理のわずかな機能しかありませんでしたが、わずか数キロバイトのメモリで高級言語を動かすというのは大きな挑戦のひとつだったようです。CheapBasicはいわばその末裔です。CheapBasicのソースはC言語で約650行ほどですが、IF文、GOTO文、PRINT文、INPUT文などの必須機能はもとより、FOR - NEXT、GOSUB - RETURN、実数演算、多次元配列、再帰などの機能もあります。次のサンプルのようなゲームやCGプログラムも作ることが出来ます。プログラム言語の処理を簡単に知りたいかた、これから作ってみたいかたなどには参考になるかもしれません。Windows(Wsl), MacOS, Linux(Raspberry Pi OSでの確認）などの汎用CUI環境で動作します。興味がありましたらぜひ使ってみてください。
 <br>
 <br>
  
@@ -138,7 +138,7 @@ githubからリポジトリをコピーして、コンパイル、テストプ�
  
 ```sh
 リポジトリのコピー
-$ git clone https://github.com/natto2121/cb
+$ git clone https://github.com/natto2121/cheapbasic
 
 コンパイル
 $ cd cb/src
@@ -164,7 +164,7 @@ $ ./test.sh
 <br>
 # Author
   
-* 作成者  : 中村　隆和　（Takakazu Nakamura）
+* 作成者  : 中村　隆和（Takakazu NAKAMURA)
 <br>
 <br>
 
