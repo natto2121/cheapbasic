@@ -1,6 +1,6 @@
 /* CheapBasic: a tiny BASIC interpreter.
-   Last updated Sep 12 2021.
-   Copyright (C) 1992-2021 Takakazu NAKAMURA */
+   Last updated Jun 2 2022.
+   Copyright (C) 1992-2022 Takakazu NAKAMURA */
 
 /*
 #define	DEBUG
