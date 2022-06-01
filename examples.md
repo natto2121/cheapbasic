@@ -1,7 +1,7 @@
 # Exsamples
 
 サンプルプログラムの解説です。
-##### ※入力するコマンドや値は<font color="red">赤色</font>で示してあります。
+##### ※入力するコマンドや値は<font color="red">赤色</font>で示してあります。ここでは、cbコマンドにPATHが通されていることを前提としています。
 <br>
 <br>
 
@@ -368,9 +368,9 @@ $
 ## マンデルブロ集合の描画
 ---
 mandel.txt<br>
-320 x 320 ピクセルの画像にマンデルブロ集合を描画し、PDFファイルに結果を出力します。CheapBasicの出力命令はprint文しかありませんので、文字列をファイルにリダイレクトしてPDFファイルを作成します。コマンドプロンプトに戻るまで、数秒から数十秒かかります（マシンの性能に依存します）<br>
+320 x 320 ピクセルの画像にマンデルブロ集合を描画し、PDFファイルに結果を出力します。CheapBasicの出力命令はprint文しかないので、文字列をファイルにリダイレクトしてPDFファイルを作成します。コマンドプロンプトに戻るまで、数秒から数十秒かかります（マシンの性能に依存します）<br>
 <pre>
-$<font color="red">cb cb mandel.txt > mandel.pdf</font>
+$<font color="red">cb mandel.txt > mandel.pdf</font>
 $
 </pre>
 ![mandel.png](images/mandel.png)
