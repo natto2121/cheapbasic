@@ -43,6 +43,7 @@ Pi =     3.
 8 . . . . . . . . .
 9 . . . . . . . . 1
 rest:66 mines, xy = 55
+(5, 5の座標位置を開きます)
 
   1 2 3 4 5 6 7 8 9
 1   2 . . . 1      
@@ -134,18 +135,20 @@ tes.sh mtable
 ~~~
 
 <br>
-githubからリポジトリをコピーして、コンパイル、テストプログラムを実行する例です。
- 
-```sh
+コンパイル、テストプログラムを実行する例です。
+
+<!-- 
 リポジトリのコピー
 $ git clone https://github.com/natto2121/cheapbasic
+-->
 
+```sh
 コンパイル
 $ cd cb/src
 $ gcc cb.c -o cb
+$ mv cb ../bin/cb
 
 サンプルプログラムの実行
-$ mv cb ../bin/cb
 $ cd ../bin
 $ export PATH=`pwd`:${PATH}
 $ cd examples
@@ -164,7 +167,7 @@ $ ./test.sh
 <br>
 # Author
   
-* 作成者  : 中村　隆和（Takakazu NAKAMURA)
+* Takakazu NAKAMURA (natto21)
 <br>
 <br>
 
