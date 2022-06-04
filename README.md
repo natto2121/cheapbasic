@@ -144,7 +144,7 @@ $ git clone https://github.com/natto2121/cheapbasic
 
 ```sh
 コンパイル
-$ cd cb/src
+$ cd src
 $ gcc cb.c -o cb
 $ mv cb ../bin/cb
 
